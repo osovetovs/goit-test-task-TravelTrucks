@@ -1,0 +1,117 @@
+.camperContainer {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+
+  padding: 64px 48px 64px 52px;
+}
+.camperName {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.33333;
+  color: var(--dark-blue);
+  margin-top: auto;
+  margin-bottom: 8px;
+}
+
+.gallery {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+}
+
+.image {
+  width: 292px;
+  height: 312px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.location {
+  font-size: 16px;
+  color: var(--dark-blue);
+  line-height: 1.5;
+  margin-left: 16px;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.ratingValue {
+  color: var(--dark-blue);
+  font-weight: 500;
+}
+
+.reviewCount {
+  color: var(--gray-blue);
+}
+.starIcon {
+  color: var(--yellow);
+  margin-right: 5px;
+}
+.price {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--dark-blue);
+  line-height: 1.33333;
+  margin-bottom: 28px;
+}
+
+.description {
+  font-size: 16px;
+  color: var(--gray-blue);
+  line-height: 1.5;
+  margin-bottom: 60px;
+}
+.tabs {
+  display: flex;
+  gap: 40px;
+}
+.svgLine {
+  width: 100%;
+  height: 1px;
+  background-color: var(--light-gray);
+  margin-bottom: 56px;
+}
+
+.tabButton {
+  background: none;
+  border: none;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--dark-blue);
+  cursor: pointer;
+  padding-bottom: 24px;
+  border-bottom: 5px solid transparent;
+  transition: border-color 0.3s ease;
+  text-decoration: none;
+}
+
+.activeTab {
+  color: var(--red);
+  border-bottom: 5px solid var(--red);
+  text-decoration: none;
+}
+
+.featuresAndBooking {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 40px;
+  min-height: 500px;
+}
+
+.features {
+  border-radius: 12px;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
