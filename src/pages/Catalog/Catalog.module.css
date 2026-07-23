@@ -47,10 +47,12 @@
 }
 
 .loadMoreButton {
+  box-sizing: border-box;
+
   width: 145px;
   height: 56px;
   margin: 40px auto 0;
-  padding: 16px 32px;
+  padding: 15px 31px;
 
   display: flex;
   align-items: center;
@@ -63,12 +65,16 @@
   color: #101828;
   cursor: pointer;
 
+  font-family: inherit;
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
   letter-spacing: -0.005em;
+  white-space: nowrap;
 
-  transition: border-color 200ms ease;
+  transition:
+    border-color 200ms ease,
+    background-color 200ms ease;
 }
 
 .loadMoreButton:hover,
@@ -167,10 +173,12 @@
   border-radius: 200px;
   cursor: pointer;
 
+  font-family: inherit;
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
   letter-spacing: -0.005em;
+  white-space: nowrap;
 
   transition:
     background-color 200ms ease,
