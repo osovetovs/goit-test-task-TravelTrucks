@@ -117,7 +117,7 @@
   height: 24px;
 
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 16px;
 }
 
@@ -166,10 +166,10 @@
 }
 
 .location svg {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
 
-  flex: 0 0 16px;
+  flex: 0 0 20px;
 }
 
 .description {
