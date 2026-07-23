@@ -1,51 +1,60 @@
 .container {
-  position: relative;
   width: 100%;
   height: calc(100vh - 72px);
-  box-sizing: border-box;
-  background: url("/assets/hero.jpg") no-repeat center center / cover;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 0 40px;
+  min-height: 696px;
+  padding: 192px 64px 64px;
+
+  background-image: url("/assets/hero.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
   overflow: hidden;
 }
 
 .hero {
-  text-align: left;
-  color: var(--very-light-gray);
-  max-width: 600px;
+  max-width: 640px;
+  color: #ffffff;
 }
 
 .heroTitle {
+  margin: 0 0 16px;
+
   font-size: 48px;
   font-weight: 600;
-  margin-bottom: 16px;
   line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
-.title {
+.heroDescription {
+  margin: 0 0 40px;
+
   font-size: 24px;
-  margin-bottom: 30px;
   font-weight: 600;
-  line-height: 1.33333;
+  line-height: 1.33;
 }
 
 .heroButton {
-  padding: 16px 40px;
-  background-color: var(--red);
-  color: var(--white);
-  border: none;
+  width: 173px;
+  height: 56px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   border-radius: 200px;
+
+  color: #ffffff;
+  background-color: #829b91;
+
   font-size: 16px;
   font-weight: 500;
-  cursor: pointer;
-  transition:
-    background-color 0.3s ease,
-    transform 0.3s ease;
+  line-height: 24px;
+
+  transition: background-color 200ms ease;
 }
 
-.heroButton:hover {
-  background-color: var(--dark-red);
-  transform: translateY(-3px);
+.heroButton:hover,
+.heroButton:focus-visible {
+  background-color: #6d7b75;
 }
