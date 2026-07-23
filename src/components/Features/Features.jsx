@@ -1,3 +1,5 @@
+import styles from "./Features.module.css";
+
 const formatForm = (form) => {
   const forms = {
     alcove: "Alcove",
@@ -22,13 +24,12 @@ const formatMeasurement = (value, unit) => {
     return "";
   }
 
-  const formattedValue = String(value).trim();
+  const normalizedValue = String(value)
+    .trim()
+    .replace(/\s+/g, " ")
+    .replace(new RegExp(`\\s*${unit}\\s*$`, "i"), "");
 
-  if (formattedValue.toLowerCase().includes(unit.toLowerCase())) {
-    return formattedValue;
-  }
-
-  return `${formattedValue} ${unit}`;
+  return `${normalizedValue} ${unit}`;
 };
 
 const formatConsumption = (value) => {
@@ -36,16 +37,13 @@ const formatConsumption = (value) => {
     return "";
   }
 
-  const formattedValue = String(value).trim();
+  const normalizedValue = String(value)
+    .trim()
+    .replace(/\s+/g, " ")
+    .replace(/\s*l\s*\/\s*100\s*km\s*$/i, "");
 
-  if (formattedValue.toLowerCase().includes("/100km")) {
-    return formattedValue;
-  }
-
-  return `${formattedValue} l / 100km`;
+  return `${normalizedValue} l / 100km`;
 };
-
-import styles from "./Features.module.css";
 
 const Features = ({ camper }) => {
   if (!camper) {
@@ -94,7 +92,7 @@ const Features = ({ camper }) => {
     <article className={styles.featuresContainer}>
       <h2 className={styles.title}>Vehicle details</h2>
 
-      <ul className={styles.features} role="list">
+      <ul className={styles.features}>
         {featureBadges.map((feature) => (
           <li key={feature} className={styles.feature}>
             {feature}
@@ -105,10 +103,10 @@ const Features = ({ camper }) => {
       <div className={styles.divider} />
 
       <dl className={styles.detailsList}>
-        {vehicleDetails.map((detail) => (
-          <div key={detail.label} className={styles.detailItem}>
-            <dt>{detail.label}</dt>
-            <dd>{detail.value}</dd>
+        {vehicleDetails.map(({ label, value }) => (
+          <div key={label} className={styles.detailItem}>
+            <dt>{label}</dt>
+            <dd>{value}</dd>
           </div>
         ))}
       </dl>
