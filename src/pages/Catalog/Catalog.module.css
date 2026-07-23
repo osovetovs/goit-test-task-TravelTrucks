@@ -2,65 +2,78 @@
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 48px 64px 64px;
+  padding: 48px 64px 52px;
 
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 360px 888px;
+  align-items: start;
   gap: 64px;
+
+  background-color: #ffffff;
+}
+
+.catalogContainer:has(.noResults) {
+  min-height: calc(100vh - 72px);
+  padding-bottom: 120px;
 }
 
 .camperListWrapper {
   width: 888px;
   min-width: 0;
-  flex: 1;
 }
 
 .camperList {
+  width: 888px;
   margin: 0;
   padding: 0;
 
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 32px;
 
   list-style: none;
 }
 
 .camperListItem {
+  width: 888px;
+  height: 312px;
   margin: 0;
   padding: 0;
+
+  flex: 0 0 312px;
 
   list-style: none;
 }
 
 .loadMoreButton {
-  min-width: 145px;
+  width: 145px;
   height: 56px;
   margin: 40px auto 0;
-  padding: 0 32px;
+  padding: 16px 32px;
 
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
 
-  border: 1px solid var(--light-gray);
+  border: 1px solid #dadde1;
   border-radius: 200px;
-  background-color: var(--white);
-  color: var(--dark-blue);
+  background-color: #ffffff;
+  color: #101828;
   cursor: pointer;
 
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
+  letter-spacing: -0.005em;
 
-  transition:
-    border-color 200ms ease,
-    background-color 200ms ease;
+  transition: border-color 200ms ease;
 }
 
 .loadMoreButton:hover,
 .loadMoreButton:focus-visible {
-  border-color: var(--green);
+  border-color: #829b91;
 }
 
 .loadMoreButton:disabled {
@@ -68,10 +81,148 @@
   opacity: 0.6;
 }
 
-.noResults,
+/* Figma empty-results card */
+
+.noResults {
+  position: relative;
+
+  width: 888px;
+  height: 840px;
+  padding: 24px;
+
+  overflow: hidden;
+
+  border-radius: 16px;
+  background-color: #f7f7f7;
+}
+
+.noResultsImage {
+  position: absolute;
+  top: 0;
+  left: 200px;
+
+  width: 488px;
+  height: 463px;
+
+  object-fit: contain;
+}
+
+.noResultsTitle {
+  position: absolute;
+  top: 484px;
+  left: 24px;
+
+  width: 840px;
+  height: 32px;
+  margin: 0;
+
+  color: #101828;
+
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  text-align: center;
+}
+
+.noResultsDescription {
+  position: absolute;
+  top: 532px;
+  left: 24px;
+
+  width: 840px;
+  height: 48px;
+  margin: 0;
+
+  color: #101828;
+
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: center;
+}
+
+.noResultsActions {
+  position: absolute;
+  top: 623px;
+  left: 244px;
+
+  width: 400px;
+  height: 56px;
+  margin: 0;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.primaryButton,
+.secondaryButton {
+  width: 192px;
+  height: 56px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 200px;
+  cursor: pointer;
+
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.005em;
+
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease;
+}
+
+.primaryButton {
+  padding: 16px 24px;
+
+  border: none;
+  background-color: #829b91;
+  color: #ffffff;
+}
+
+.primaryButton:hover,
+.primaryButton:focus-visible {
+  background-color: #6d7b75;
+}
+
+.secondaryButton {
+  padding: 16px 32px;
+
+  gap: 4px;
+
+  border: 1px solid #dadde1;
+  background-color: #ffffff;
+  color: #101828;
+}
+
+.secondaryButton:hover,
+.secondaryButton:focus-visible {
+  border-color: #829b91;
+}
+
+.secondaryButton span {
+  width: 24px;
+  height: 24px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+/* Actual request failure */
+
 .errorMessage {
-  width: 100%;
-  min-height: 840px;
+  width: 888px;
+  min-height: 400px;
   padding: 64px;
 
   display: flex;
@@ -80,148 +231,126 @@
   justify-content: center;
 
   border-radius: 16px;
-  background-color: var(--very-light-gray);
+  background-color: #f7f7f7;
   text-align: center;
 }
 
-.noResultsImage {
-  width: 440px;
-  max-width: 100%;
-  height: 440px;
-
-  object-fit: contain;
-}
-
-.noResultsTitle,
 .errorTitle {
-  margin: 24px 0 0;
+  margin: 0;
 
-  color: var(--dark-blue);
+  color: #101828;
 
   font-size: 24px;
   font-weight: 600;
   line-height: 32px;
 }
 
-.noResultsDescription,
 .errorDescription {
   margin: 16px 0 0;
 
-  color: var(--dark-blue);
+  color: #475467;
 
   font-size: 16px;
   font-weight: 400;
   line-height: 24px;
 }
 
-.noResultsActions {
-  margin-top: 40px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-}
-
-.primaryButton,
-.secondaryButton {
-  min-width: 192px;
-  height: 56px;
-  padding: 0 24px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
-  border-radius: 200px;
-  cursor: pointer;
-
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px;
-
-  transition:
-    background-color 200ms ease,
-    border-color 200ms ease;
-}
-
-.primaryButton {
-  border: none;
-  background-color: var(--green);
-  color: var(--white);
-}
-
-.primaryButton:hover,
-.primaryButton:focus-visible {
-  background-color: var(--dark-green);
-}
-
-.secondaryButton {
-  border: 1px solid var(--light-gray);
-  background-color: var(--white);
-  color: var(--dark-blue);
-}
-
-.secondaryButton:hover,
-.secondaryButton:focus-visible {
-  border-color: var(--green);
-}
-
-.secondaryButton span {
-  font-size: 24px;
-  font-weight: 400;
-  line-height: 1;
+.errorMessage .primaryButton {
+  margin-top: 32px;
 }
 
 .inlineError {
+  width: 100%;
   margin-top: 24px;
 
-  color: var(--red);
+  color: #e44848;
 
   font-size: 16px;
   line-height: 24px;
   text-align: center;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1350px) {
   .catalogContainer {
     padding-right: 32px;
     padding-left: 32px;
+
+    grid-template-columns: 360px minmax(0, 888px);
     gap: 32px;
   }
 
+  .camperListWrapper,
+  .camperList,
+  .camperListItem,
   .noResults,
   .errorMessage {
-    min-height: 720px;
-    padding: 40px;
-  }
-
-  .noResultsImage {
-    width: 360px;
-    height: 360px;
+    width: 100%;
   }
 }
 
-@media (max-width: 800px) {
-  .catalogContainer {
-    padding: 32px 20px;
+@media (max-width: 900px) {
+  .catalogContainer,
+  .catalogContainer:has(.noResults) {
+    min-height: auto;
+    padding: 32px 20px 64px;
 
+    display: flex;
     flex-direction: column;
+    gap: 32px;
   }
 
-  .camperListWrapper {
+  .camperListWrapper,
+  .camperList,
+  .camperListItem {
     width: 100%;
   }
 
-  .noResults,
-  .errorMessage {
-    min-height: 600px;
-    padding: 32px 20px;
+  .camperListItem {
+    height: auto;
+    flex-basis: auto;
+  }
+
+  .noResults {
+    width: 100%;
+    height: auto;
+    min-height: 680px;
+    padding: 40px 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .noResultsImage,
+  .noResultsTitle,
+  .noResultsDescription,
+  .noResultsActions {
+    position: static;
+  }
+
+  .noResultsImage {
+    width: min(100%, 400px);
+    height: auto;
+  }
+
+  .noResultsTitle,
+  .noResultsDescription {
+    width: 100%;
+    height: auto;
+  }
+
+  .noResultsTitle {
+    margin-top: 24px;
+  }
+
+  .noResultsDescription {
+    margin-top: 16px;
   }
 
   .noResultsActions {
     width: 100%;
+    height: auto;
+    margin-top: 40px;
 
     flex-direction: column;
   }
@@ -229,5 +358,11 @@
   .primaryButton,
   .secondaryButton {
     width: 100%;
+  }
+
+  .errorMessage {
+    width: 100%;
+    min-height: 400px;
+    padding: 40px 20px;
   }
 }

@@ -87,86 +87,92 @@ const Sidebar = ({ onSearch }) => {
 
   return (
     <form className={styles.sidebar} onSubmit={handleSearch}>
-      <label className={styles.locationLabel}>
-        <span className={styles.locationTitle}>Location</span>
+      <div className={styles.info}>
+        <label className={styles.locationLabel}>
+          <span className={styles.locationTitle}>Location</span>
 
-        <span className={styles.inputContainer}>
-          <BsMap className={styles.locationIcon} aria-hidden="true" />
+          <span className={styles.inputContainer}>
+            <BsMap className={styles.locationIcon} aria-hidden="true" />
 
-          <input
-            type="text"
-            value={filters.location}
-            onChange={handleLocationChange}
-            placeholder="City"
-            className={styles.locationInput}
-          />
-        </span>
-      </label>
+            <input
+              type="text"
+              value={filters.location}
+              onChange={handleLocationChange}
+              placeholder="City"
+              className={styles.locationInput}
+            />
+          </span>
+        </label>
 
-      <p className={styles.filterTitle}>Filters</p>
+        <div className={styles.filtersSection}>
+          <h2 className={styles.filterTitle}>Filters</h2>
 
-      <fieldset className={styles.filterGroup}>
-        <legend className={styles.groupTitle}>Camper form</legend>
+          <div className={styles.filterGroups}>
+            <fieldset className={styles.filterGroup}>
+              <legend className={styles.groupTitle}>Camper form</legend>
 
-        <div className={styles.options}>
-          {camperForms.map(({ label, value }) => (
-            <label className={styles.option} key={value}>
-              <input
-                className={styles.radio}
-                type="radio"
-                name="camperForm"
-                value={value}
-                checked={filters.form === value}
-                onChange={() => dispatch(setForm(value))}
-              />
+              <div className={styles.options}>
+                {camperForms.map(({ label, value }) => (
+                  <label className={styles.option} key={value}>
+                    <input
+                      className={styles.radio}
+                      type="radio"
+                      name="camperForm"
+                      value={value}
+                      checked={filters.form === value}
+                      onChange={() => dispatch(setForm(value))}
+                    />
 
-              <span>{label}</span>
-            </label>
-          ))}
+                    <span>{label}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+
+            <fieldset className={styles.filterGroup}>
+              <legend className={styles.groupTitle}>Engine</legend>
+
+              <div className={styles.options}>
+                {engines.map(({ label, value }) => (
+                  <label className={styles.option} key={value}>
+                    <input
+                      className={styles.radio}
+                      type="radio"
+                      name="engine"
+                      value={value}
+                      checked={filters.engine === value}
+                      onChange={() => dispatch(setEngine(value))}
+                    />
+
+                    <span>{label}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+
+            <fieldset className={styles.filterGroup}>
+              <legend className={styles.groupTitle}>Transmission</legend>
+
+              <div className={styles.options}>
+                {transmissions.map(({ label, value }) => (
+                  <label className={styles.option} key={value}>
+                    <input
+                      className={styles.radio}
+                      type="radio"
+                      name="transmission"
+                      value={value}
+                      checked={filters.transmission === value}
+                      onChange={() => dispatch(setTransmission(value))}
+                    />
+
+                    <span>{label}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          </div>
         </div>
-      </fieldset>
-
-      <fieldset className={styles.filterGroup}>
-        <legend className={styles.groupTitle}>Engine</legend>
-
-        <div className={styles.options}>
-          {engines.map(({ label, value }) => (
-            <label className={styles.option} key={value}>
-              <input
-                className={styles.radio}
-                type="radio"
-                name="engine"
-                value={value}
-                checked={filters.engine === value}
-                onChange={() => dispatch(setEngine(value))}
-              />
-
-              <span>{label}</span>
-            </label>
-          ))}
-        </div>
-      </fieldset>
-
-      <fieldset className={styles.filterGroup}>
-        <legend className={styles.groupTitle}>Transmission</legend>
-
-        <div className={styles.options}>
-          {transmissions.map(({ label, value }) => (
-            <label className={styles.option} key={value}>
-              <input
-                className={styles.radio}
-                type="radio"
-                name="transmission"
-                value={value}
-                checked={filters.transmission === value}
-                onChange={() => dispatch(setTransmission(value))}
-              />
-
-              <span>{label}</span>
-            </label>
-          ))}
-        </div>
-      </fieldset>
+      </div>
 
       <div className={styles.actions}>
         <button type="submit" className={styles.searchButton}>
