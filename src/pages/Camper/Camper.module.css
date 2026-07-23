@@ -1,117 +1,304 @@
 .camperContainer {
+  width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-
-  padding: 64px 48px 64px 52px;
+  padding: 48px 64px 64px;
 }
+
+.overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+}
+
+.galleryColumn {
+  min-width: 0;
+}
+
+.mainImage,
+.imagePlaceholder {
+  width: 100%;
+  height: 496px;
+
+  border-radius: 16px;
+}
+
+.mainImage {
+  object-fit: cover;
+  object-position: center;
+}
+
+.imagePlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--very-light-gray);
+  color: var(--blue-gray);
+
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.thumbnailList {
+  margin-top: 24px;
+
+  display: flex;
+  align-items: center;
+  gap: 24px;
+
+  overflow-x: auto;
+}
+
+.thumbnailButton {
+  width: 136px;
+  height: 144px;
+  padding: 0;
+
+  flex: 0 0 136px;
+
+  overflow: hidden;
+
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background-color: transparent;
+  cursor: pointer;
+
+  transition: border-color 200ms ease;
+}
+
+.thumbnailButton:hover,
+.thumbnailButton:focus-visible,
+.activeThumbnail {
+  border-color: var(--green);
+}
+
+.thumbnailImage {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+}
+
+.summaryCard {
+  min-height: 300px;
+  padding: 24px;
+
+  border-radius: 16px;
+  background-color: var(--very-light-gray);
+}
+
 .camperName {
+  margin: 0;
+
+  color: var(--dark-blue);
+
   font-size: 24px;
   font-weight: 600;
-  line-height: 1.33333;
-  color: var(--dark-blue);
-  margin-top: auto;
-  margin-bottom: 8px;
+  line-height: 32px;
 }
 
-.gallery {
+.meta {
+  margin-top: 8px;
+
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 28px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
-.image {
-  width: 292px;
-  height: 312px;
-  object-fit: cover;
-  border-radius: 10px;
+.rating,
+.location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  color: var(--dark-blue);
+
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
 }
 
 .location {
-  font-size: 16px;
-  color: var(--dark-blue);
-  line-height: 1.5;
-  margin-left: 16px;
+  margin: 0;
 }
 
-.rating {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 16px;
-  line-height: 1.5;
+.rating svg,
+.location svg {
+  width: 16px;
+  height: 16px;
 }
 
-.ratingValue {
-  color: var(--dark-blue);
-  font-weight: 500;
-}
-
-.reviewCount {
-  color: var(--gray-blue);
-}
 .starIcon {
   color: var(--yellow);
-  margin-right: 5px;
 }
+
 .price {
+  margin: 24px 0 0;
+
+  color: var(--dark-blue);
+
   font-size: 24px;
   font-weight: 600;
-  color: var(--dark-blue);
-  line-height: 1.33333;
-  margin-bottom: 28px;
+  line-height: 32px;
 }
 
 .description {
-  font-size: 16px;
+  margin: 24px 0 0;
+
   color: var(--gray-blue);
-  line-height: 1.5;
-  margin-bottom: 60px;
+
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
 }
+
 .tabs {
+  margin-top: 64px;
+
   display: flex;
+  align-items: center;
   gap: 40px;
-}
-.svgLine {
-  width: 100%;
-  height: 1px;
-  background-color: var(--light-gray);
-  margin-bottom: 56px;
 }
 
 .tabButton {
-  background: none;
-  border: none;
+  padding-bottom: 24px;
+
+  border-bottom: 4px solid transparent;
+  color: var(--dark-blue);
+
   font-size: 20px;
   font-weight: 600;
-  color: var(--dark-blue);
-  cursor: pointer;
-  padding-bottom: 24px;
-  border-bottom: 5px solid transparent;
-  transition: border-color 0.3s ease;
-  text-decoration: none;
+  line-height: 24px;
+
+  transition:
+    border-color 200ms ease,
+    color 200ms ease;
 }
 
+.tabButton:hover,
+.tabButton:focus-visible,
 .activeTab {
-  color: var(--red);
-  border-bottom: 5px solid var(--red);
-  text-decoration: none;
+  border-bottom-color: var(--green);
+  color: var(--green);
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+
+  background-color: var(--light-gray);
 }
 
 .featuresAndBooking {
-  display: flex;
+  margin-top: 48px;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: stretch;
-  justify-content: space-between;
   gap: 40px;
-  min-height: 500px;
 }
 
-.features {
-  border-radius: 12px;
+.outletContent {
+  min-width: 0;
+}
 
-  flex: 1;
+.errorState {
+  min-height: calc(100vh - 72px);
+  padding: 64px 20px;
+
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.errorTitle {
+  margin: 0;
+
+  color: var(--dark-blue);
+
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 40px;
+}
+
+.errorDescription {
+  margin: 16px 0 0;
+
+  color: var(--gray-blue);
+
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.backButton {
+  min-width: 173px;
+  height: 56px;
+  margin-top: 32px;
+  padding: 0 24px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 200px;
+  background-color: var(--green);
+  color: var(--white);
+
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.backButton:hover,
+.backButton:focus-visible {
+  background-color: var(--dark-green);
+}
+
+@media (max-width: 1000px) {
+  .camperContainer {
+    padding-right: 32px;
+    padding-left: 32px;
+  }
+
+  .mainImage,
+  .imagePlaceholder {
+    height: 420px;
+  }
+
+  .featuresAndBooking {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .camperContainer {
+    padding: 32px 20px;
+  }
+
+  .overview {
+    grid-template-columns: 1fr;
+  }
+
+  .mainImage,
+  .imagePlaceholder {
+    height: 360px;
+  }
+
+  .thumbnailList {
+    gap: 12px;
+  }
+
+  .thumbnailButton {
+    width: 100px;
+    height: 104px;
+
+    flex-basis: 100px;
+  }
 }
