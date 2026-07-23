@@ -7,16 +7,17 @@ import NotFound from "./pages/NotFound/NotFound";
 const Home = lazy(() => import("./pages/Home/Home"));
 const Catalog = lazy(() => import("./pages/Catalog/Catalog"));
 const Camper = lazy(() => import("./pages/Camper/Camper"));
-const Favorites = lazy(() => import("./pages/Favorites/Favorites"));
 
 const App = () => {
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route path="/" element={<Home />} />
+
         <Route path="/catalog" element={<Catalog />} />
+
         <Route path="/catalog/:id/*" element={<Camper />} />
-        <Route path="/favorites" element={<Favorites />} />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>

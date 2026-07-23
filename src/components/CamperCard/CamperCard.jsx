@@ -1,16 +1,11 @@
 import { NavLink } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import {
   BsCarFront,
   BsDiagram3,
   BsFuelPump,
-  BsHeart,
-  BsHeartFill,
   BsMap,
   BsStarFill,
 } from "react-icons/bs";
-
-import { toggleFavorite } from "../../store/favoritesSlice";
 
 import styles from "./CamperCard.module.css";
 
@@ -44,11 +39,6 @@ const formatForm = (form) => {
 };
 
 const CamperCard = ({ camper }) => {
-  const dispatch = useDispatch();
-
-  const favoriteIds = useSelector((state) => state.favorites.ids);
-  const isFavorite = favoriteIds.includes(camper.id);
-
   const imageSource =
     camper.gallery?.[0]?.thumb ||
     camper.gallery?.[0]?.original ||
@@ -72,10 +62,6 @@ const CamperCard = ({ camper }) => {
       icon: <BsCarFront aria-hidden="true" />,
     },
   ].filter(Boolean);
-
-  const handleToggleFavorite = () => {
-    dispatch(toggleFavorite(camper.id));
-  };
 
   return (
     <article className={styles.camperCard}>
@@ -131,7 +117,10 @@ const CamperCard = ({ camper }) => {
             {filterValues.map(({ name, icon }) => (
               <li key={name} className={styles.feature}>
                 {icon}
-                <span className={styles.featureName}>{name}</span>
+
+                <span className={styles.featureName}>
+                  {name}
+                </span>
               </li>
             ))}
           </ul>
@@ -146,26 +135,6 @@ const CamperCard = ({ camper }) => {
           </NavLink>
         </div>
       </div>
-
-      <button
-        type="button"
-        className={styles.favoriteIcon}
-        onClick={handleToggleFavorite}
-        aria-label={
-          isFavorite
-            ? `Remove ${camper.name} from favorites`
-            : `Add ${camper.name} to favorites`
-        }
-      >
-        {isFavorite ? (
-          <BsHeartFill
-            className={styles.filledHeart}
-            aria-hidden="true"
-          />
-        ) : (
-          <BsHeart className={styles.heart} aria-hidden="true" />
-        )}
-      </button>
     </article>
   );
 };
