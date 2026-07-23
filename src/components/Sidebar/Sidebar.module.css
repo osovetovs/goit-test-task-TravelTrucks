@@ -75,21 +75,19 @@
 
 .filterGroup {
   margin: 0;
-  padding: 0 0 24px;
+  padding: 0;
 
   border: none;
 }
 
 .filterGroup + .filterGroup {
-  padding-top: 8px;
+  margin-top: 24px;
 }
 
 .groupTitle {
-  width: 100%;
-  margin: 0 0 16px;
-  padding: 0 0 12px;
+  margin: 0 0 8px;
+  padding: 0;
 
-  border-bottom: 1px solid var(--light-gray);
   color: var(--blue-gray);
 
   font-size: 16px;
@@ -100,7 +98,7 @@
 .options {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .option {
@@ -112,10 +110,10 @@
   cursor: pointer;
 
   font-size: 16px;
+  font-weight: 400;
   line-height: 24px;
 }
 
-.checkbox,
 .radio {
   width: 20px;
   height: 20px;
@@ -125,34 +123,25 @@
 
   appearance: none;
   border: 1px solid var(--gray-blue);
+  border-radius: 50%;
   background-color: var(--white);
   cursor: pointer;
 }
 
-.checkbox {
-  border-radius: 4px;
-}
-
-.radio {
-  border-radius: 50%;
-}
-
-.checkbox:checked {
-  border: 5px solid var(--green);
-  background-color: var(--green);
-}
-
 .radio:checked {
-  border: 5px solid var(--green);
+  border: 5px solid var(--white);
+  background-color: var(--gray-blue);
+  box-shadow: 0 0 0 1px var(--gray-blue);
 }
 
-.checkbox:focus-visible,
 .radio:focus-visible {
   outline: 2px solid var(--green);
   outline-offset: 2px;
 }
 
 .actions {
+  margin-top: 32px;
+
   display: flex;
   flex-direction: column;
   gap: 16px;

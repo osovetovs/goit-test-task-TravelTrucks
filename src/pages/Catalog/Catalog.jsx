@@ -1,45 +1,38 @@
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
+import CamperCard from "../../components/CamperCard/CamperCard";
+import Loader from "../../components/Loader/Loader";
+import Sidebar from "../../components/Sidebar/Sidebar";
+
 import {
   fetchCampers,
   fetchFilteredCampers,
   loadMore,
   resetCampers,
 } from "../../store/campersSlice";
-import Sidebar from "../../components/Sidebar/Sidebar";
-import CamperCard from "../../components/CamperCard/CamperCard";
-import Loader from "../../components/Loader/Loader";
+
 import styles from "./Catalog.module.css";
 
 const mapFiltersToApiParams = (filters) => {
   const params = {};
 
-  if (filters.location) {
-    params.location = filters.location;
+  const location = filters.location.trim();
+
+  if (location) {
+    params.location = location;
   }
 
-  if (filters.AC) {
-    params.AC = true;
+  if (filters.form) {
+    params.form = filters.form;
   }
 
-  if (filters.Kitchen) {
-    params.kitchen = true;
+  if (filters.engine) {
+    params.engine = filters.engine;
   }
 
-  if (filters.TV) {
-    params.TV = true;
-  }
-
-  if (filters.Bathroom) {
-    params.bathroom = true;
-  }
-
-  if (filters.Automatic) {
-    params.transmission = "automatic";
-  }
-
-  if (filters.vehicleType) {
-    params.form = filters.vehicleType;
+  if (filters.transmission) {
+    params.transmission = filters.transmission;
   }
 
   return params;
@@ -51,13 +44,10 @@ const hasAnyFilter = (filters) => {
   }
 
   return Boolean(
-    filters.location ||
-      filters.AC ||
-      filters.Automatic ||
-      filters.Kitchen ||
-      filters.TV ||
-      filters.Bathroom ||
-      filters.vehicleType
+    filters.location.trim() ||
+      filters.form ||
+      filters.engine ||
+      filters.transmission
   );
 };
 

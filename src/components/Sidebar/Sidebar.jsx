@@ -3,43 +3,67 @@ import { BsMap, BsX } from "react-icons/bs";
 
 import {
   resetFilters,
+  setEngine,
+  setForm,
   setLocation,
-  setVehicleType,
-  toggleFilter,
+  setTransmission,
 } from "../../store/filterSlice";
 
 import styles from "./Sidebar.module.css";
 
 const EMPTY_FILTERS = {
   location: "",
-  AC: false,
-  Automatic: false,
-  Kitchen: false,
-  TV: false,
-  Bathroom: false,
-  vehicleType: "",
+  form: "",
+  engine: "",
+  transmission: "",
 };
 
-const equipmentOptions = [
-  "AC",
-  "Automatic",
-  "Kitchen",
-  "TV",
-  "Bathroom",
+const camperForms = [
+  {
+    label: "Alcove",
+    value: "alcove",
+  },
+  {
+    label: "Panel Van",
+    value: "panelTruck",
+  },
+  {
+    label: "Integrated",
+    value: "fullyIntegrated",
+  },
+  {
+    label: "Semi Integrated",
+    value: "semiIntegrated",
+  },
 ];
 
-const vehicleTypes = [
+const engines = [
   {
-    name: "Van",
-    value: "panel truck",
+    label: "Diesel",
+    value: "diesel",
   },
   {
-    name: "Fully Integrated",
-    value: "fully integrated",
+    label: "Petrol",
+    value: "petrol",
   },
   {
-    name: "Alcove",
-    value: "alcove",
+    label: "Hybrid",
+    value: "hybrid",
+  },
+  {
+    label: "Electric",
+    value: "electric",
+  },
+];
+
+const transmissions = [
+  {
+    label: "Automatic",
+    value: "automatic",
+  },
+  {
+    label: "Manual",
+    value: "manual",
   },
 ];
 
@@ -49,14 +73,6 @@ const Sidebar = ({ onSearch }) => {
 
   const handleLocationChange = (event) => {
     dispatch(setLocation(event.target.value));
-  };
-
-  const handleEquipmentChange = (name) => {
-    dispatch(toggleFilter(name));
-  };
-
-  const handleVehicleTypeChange = (value) => {
-    dispatch(setVehicleType(value));
   };
 
   const handleSearch = (event) => {
@@ -90,39 +106,63 @@ const Sidebar = ({ onSearch }) => {
       <p className={styles.filterTitle}>Filters</p>
 
       <fieldset className={styles.filterGroup}>
-        <legend className={styles.groupTitle}>Vehicle Equipment</legend>
+        <legend className={styles.groupTitle}>Camper form</legend>
 
         <div className={styles.options}>
-          {equipmentOptions.map((name) => (
-            <label className={styles.option} key={name}>
+          {camperForms.map(({ label, value }) => (
+            <label className={styles.option} key={value}>
               <input
-                className={styles.checkbox}
-                type="checkbox"
-                checked={filters[name]}
-                onChange={() => handleEquipmentChange(name)}
+                className={styles.radio}
+                type="radio"
+                name="camperForm"
+                value={value}
+                checked={filters.form === value}
+                onChange={() => dispatch(setForm(value))}
               />
 
-              <span>{name}</span>
+              <span>{label}</span>
             </label>
           ))}
         </div>
       </fieldset>
 
       <fieldset className={styles.filterGroup}>
-        <legend className={styles.groupTitle}>Vehicle Type</legend>
+        <legend className={styles.groupTitle}>Engine</legend>
 
         <div className={styles.options}>
-          {vehicleTypes.map(({ name, value }) => (
+          {engines.map(({ label, value }) => (
             <label className={styles.option} key={value}>
               <input
                 className={styles.radio}
                 type="radio"
-                name="vehicleType"
-                checked={filters.vehicleType === value}
-                onChange={() => handleVehicleTypeChange(value)}
+                name="engine"
+                value={value}
+                checked={filters.engine === value}
+                onChange={() => dispatch(setEngine(value))}
               />
 
-              <span>{name}</span>
+              <span>{label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset className={styles.filterGroup}>
+        <legend className={styles.groupTitle}>Transmission</legend>
+
+        <div className={styles.options}>
+          {transmissions.map(({ label, value }) => (
+            <label className={styles.option} key={value}>
+              <input
+                className={styles.radio}
+                type="radio"
+                name="transmission"
+                value={value}
+                checked={filters.transmission === value}
+                onChange={() => dispatch(setTransmission(value))}
+              />
+
+              <span>{label}</span>
             </label>
           ))}
         </div>
