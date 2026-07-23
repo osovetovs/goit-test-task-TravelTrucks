@@ -1,176 +1,243 @@
 .camperCard {
   position: relative;
+
+  width: 100%;
+  min-height: 312px;
+  padding: 24px;
+
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+
+  border: none;
+  border-radius: 16px;
+  background-color: var(--very-light-gray);
+}
+
+.image {
+  width: 220px;
+  height: 264px;
+
+  flex: 0 0 220px;
+
+  border-radius: 12px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.details {
+  min-width: 0;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.headerRow {
+  min-width: 0;
+  padding-right: 42px;
+
   display: flex;
   align-items: flex-start;
-  background-color: var(--white);
-  border: 1px solid var(--light-gray);
-  border-radius: 16px;
-  padding: 24px;
+  justify-content: space-between;
   gap: 24px;
-  transition: box-shadow 0.3s ease;
+}
+
+.camperName {
+  min-width: 0;
+  margin: 0;
+
+  color: var(--dark-blue);
+
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.price {
+  position: static;
+
+  flex: 0 0 auto;
+
+  color: var(--dark-blue);
+
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  white-space: nowrap;
 }
 
 .favoriteIcon {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  z-index: 1;
-  background: transparent;
-  border: none;
+  top: 28px;
+  right: 24px;
+
+  width: 28px;
+  height: 28px;
   padding: 0;
-  line-height: 0;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 .heart,
 .filledHeart {
-  font-size: 24px;
+  width: 24px;
+  height: 24px;
+
   color: var(--dark-blue);
-  transition: color 0.3s ease;
+
+  transition: color 200ms ease;
 }
 
 .filledHeart {
-  color: var(--red);
+  color: var(--green);
 }
 
 .favoriteIcon:hover .heart,
-.favoriteIcon:hover .filledHeart {
-  color: var(--dark-red);
-}
-
-.price {
-  position: absolute;
-  top: 20px;
-  right: 60px;
-  font-size: 24px;
-  font-weight: 600;
-  color: var(--dark-blue);
-  line-height: 1.33333;
-}
-
-.image {
-  width: 292px;
-  height: 320px;
-  object-fit: cover;
-  border-radius: 12px;
-}
-
-.details {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.headerRow {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.camperName {
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 1.33333;
-  color: var(--dark-blue);
-  margin-top: auto;
-  margin-bottom: 8px;
+.favoriteIcon:focus-visible .heart,
+.favoriteIcon:hover .filledHeart,
+.favoriteIcon:focus-visible .filledHeart {
+  color: var(--dark-green);
 }
 
 .locationAndRating {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-.location {
-  font-size: 16px;
-  color: var(--dark-blue);
-  line-height: 1.5;
-}
-
-.features {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 24px;
-  list-style: none;
-  padding: 0;
-  margin-left: 0;
-}
-
-.feature {
-  background-color: var(--extra-light-gray);
-  border-radius: 12px;
-  padding: 6px 12px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.featureName {
-  font-size: 16px;
-  color: var(--dark-blue);
-  line-height: 1.5;
-  font-weight: 500;
-}
-
-.starIcon {
-  color: var(--yellow);
-  margin-right: 5px;
-}
-
-.description {
-  font-size: 16px;
-  color: var(--gray-blue);
-  line-height: 1.5;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  line-clamp: 1;
-  box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-bottom: 24px;
-  margin-top: 0;
-}
-
-.button {
-  align-self: flex-start;
-  padding: 16px 60px;
-  background-color: var(--red);
-  color: var(--white);
-  border: none;
-  border-radius: 200px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  text-decoration: none;
   margin-top: 8px;
-}
 
-.button:hover {
-  background-color: var(--dark-red);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .rating {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
+
   font-size: 16px;
-  line-height: 1.5;
+  line-height: 24px;
+}
+
+.starIcon {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+
+  color: var(--yellow);
 }
 
 .ratingValue {
   color: var(--dark-blue);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .reviewCount {
+  color: var(--dark-blue);
+}
+
+.location {
+  margin: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  color: var(--dark-blue);
+
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.location svg {
+  width: 16px;
+  height: 16px;
+}
+
+.description {
+  margin: 24px 0 0;
+
   color: var(--gray-blue);
+
+  font-size: 16px;
+  line-height: 24px;
+
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.features {
+  margin: 24px 0 0;
+  padding: 0;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  list-style: none;
+}
+
+.feature {
+  min-height: 44px;
+  padding: 8px 16px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  border-radius: 100px;
+  background-color: var(--extra-light-gray);
+}
+
+.feature svg {
+  width: 20px;
+  height: 20px;
+}
+
+.featureName {
+  color: var(--dark-blue);
+
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.button {
+  width: 173px;
+  height: 56px;
+  margin-top: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+
+  border-radius: 200px;
+  background-color: var(--green);
+  color: var(--white);
+
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  text-decoration: none;
+
+  transition: background-color 200ms ease;
+}
+
+.button:hover,
+.button:focus-visible {
+  background-color: var(--dark-green);
 }
