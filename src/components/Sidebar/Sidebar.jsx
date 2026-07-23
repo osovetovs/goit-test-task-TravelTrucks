@@ -1,16 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import {
-  BsCupHot,
-  BsDiagram3,
-  BsDroplet,
-  BsGrid,
-  BsGrid1X2,
-  BsGrid3X3Gap,
-  BsMap,
-  BsTv,
-  BsWind,
-  BsX,
-} from "react-icons/bs";
+import { BsMap, BsX } from "react-icons/bs";
 
 import {
   resetFilters,
@@ -32,43 +21,25 @@ const EMPTY_FILTERS = {
 };
 
 const equipmentOptions = [
-  {
-    name: "AC",
-    icon: <BsWind aria-hidden="true" />,
-  },
-  {
-    name: "Automatic",
-    icon: <BsDiagram3 aria-hidden="true" />,
-  },
-  {
-    name: "Kitchen",
-    icon: <BsCupHot aria-hidden="true" />,
-  },
-  {
-    name: "TV",
-    icon: <BsTv aria-hidden="true" />,
-  },
-  {
-    name: "Bathroom",
-    icon: <BsDroplet aria-hidden="true" />,
-  },
+  "AC",
+  "Automatic",
+  "Kitchen",
+  "TV",
+  "Bathroom",
 ];
 
 const vehicleTypes = [
   {
     name: "Van",
     value: "panel truck",
-    icon: <BsGrid1X2 aria-hidden="true" />,
   },
   {
     name: "Fully Integrated",
     value: "fully integrated",
-    icon: <BsGrid aria-hidden="true" />,
   },
   {
     name: "Alcove",
     value: "alcove",
-    icon: <BsGrid3X3Gap aria-hidden="true" />,
   },
 ];
 
@@ -122,7 +93,7 @@ const Sidebar = ({ onSearch }) => {
         <legend className={styles.groupTitle}>Vehicle Equipment</legend>
 
         <div className={styles.options}>
-          {equipmentOptions.map(({ name, icon }) => (
+          {equipmentOptions.map((name) => (
             <label className={styles.option} key={name}>
               <input
                 className={styles.checkbox}
@@ -131,7 +102,6 @@ const Sidebar = ({ onSearch }) => {
                 onChange={() => handleEquipmentChange(name)}
               />
 
-              <span className={styles.optionIcon}>{icon}</span>
               <span>{name}</span>
             </label>
           ))}
@@ -142,7 +112,7 @@ const Sidebar = ({ onSearch }) => {
         <legend className={styles.groupTitle}>Vehicle Type</legend>
 
         <div className={styles.options}>
-          {vehicleTypes.map(({ name, value, icon }) => (
+          {vehicleTypes.map(({ name, value }) => (
             <label className={styles.option} key={value}>
               <input
                 className={styles.radio}
@@ -152,7 +122,6 @@ const Sidebar = ({ onSearch }) => {
                 onChange={() => handleVehicleTypeChange(value)}
               />
 
-              <span className={styles.optionIcon}>{icon}</span>
               <span>{name}</span>
             </label>
           ))}
