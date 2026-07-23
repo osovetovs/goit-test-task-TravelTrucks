@@ -137,7 +137,11 @@
   border-radius: 50%;
 }
 
-.checkbox:checked,
+.checkbox:checked {
+  border: 5px solid var(--green);
+  background-color: var(--green);
+}
+
 .radio:checked {
   border: 5px solid var(--green);
 }
@@ -146,20 +150,6 @@
 .radio:focus-visible {
   outline: 2px solid var(--green);
   outline-offset: 2px;
-}
-
-.optionIcon {
-  width: 20px;
-  height: 20px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.optionIcon svg {
-  width: 18px;
-  height: 18px;
 }
 
 .actions {
