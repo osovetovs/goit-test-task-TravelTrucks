@@ -4,6 +4,7 @@ import {
   fetchCampers,
   fetchFilteredCampers,
   loadMore,
+  resetCampers,
 } from "../../store/campersSlice";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import CamperCard from "../../components/CamperCard/CamperCard";
@@ -13,104 +14,128 @@ import styles from "./Catalog.module.css";
 const mapFiltersToApiParams = (filters) => {
   const params = {};
 
-  if (filters.location) params.location = filters.location;
+  if (filters.location) {
+    params.location = filters.location;
+  }
 
-  if (filters.AC) params.AC = true;
-  if (filters.Kitchen) params.kitchen = true;
-  if (filters.TV) params.TV = true;
-  if (filters.Bathroom) params.bathroom = true;
+  if (filters.AC) {
+    params.AC = true;
+  }
 
-  if (filters.Automatic) params.transmission = "automatic";
+  if (filters.Kitchen) {
+    params.kitchen = true;
+  }
 
-  if (filters.vehicleType) params.form = filters.vehicleType;
+  if (filters.TV) {
+    params.TV = true;
+  }
+
+  if (filters.Bathroom) {
+    params.bathroom = true;
+  }
+
+  if (filters.Automatic) {
+    params.transmission = "automatic";
+  }
+
+  if (filters.vehicleType) {
+    params.form = filters.vehicleType;
+  }
 
   return params;
 };
 
 const hasAnyFilter = (filters) => {
-  if (!filters) return false;
+  if (!filters) {
+    return false;
+  }
+
   return Boolean(
     filters.location ||
-    filters.AC ||
-    filters.Automatic ||
-    filters.Kitchen ||
-    filters.TV ||
-    filters.Bathroom ||
-    filters.vehicleType
+      filters.AC ||
+      filters.Automatic ||
+      filters.Kitchen ||
+      filters.TV ||
+      filters.Bathroom ||
+      filters.vehicleType
   );
 };
 
 const Catalog = () => {
   const dispatch = useDispatch();
-  const { campers, status, page, error } = useSelector(
+
+  const { campers, status, page, error, hasMore } = useSelector(
     (state) => state.campers
   );
 
-  const [filteredCampers, setFilteredCampers] = useState([]);
-  const [displayCount, setDisplayCount] = useState(4);
-  const [isFiltering, setIsFiltering] = useState(false);
+  const [activeFilters, setActiveFilters] = useState(null);
 
   useEffect(() => {
-    if (page === 1) {
-      dispatch(fetchCampers(page));
-    }
-  }, [dispatch, page]);
+    dispatch(fetchCampers(1));
+  }, [dispatch]);
 
-  useEffect(() => {
-    if (!isFiltering && campers.length > 0) {
-      setFilteredCampers((prev) => [...prev, ...campers]);
-    }
-  }, [campers, isFiltering]);
+  const uniqueCampers = useMemo(() => {
+    const campersById = new Map();
 
-  const visibleCampers = useMemo(() => {
-    return filteredCampers.slice(0, displayCount);
-  }, [filteredCampers, displayCount]);
+    campers.forEach((camper) => {
+      campersById.set(String(camper.id), camper);
+    });
 
-  const handleSearch = async (filters) => {
+    return Array.from(campersById.values());
+  }, [campers]);
+
+  const handleSearch = (filters) => {
     const filtering = hasAnyFilter(filters);
 
-    setDisplayCount(4);
+    dispatch(resetCampers());
 
     if (!filtering) {
-      setIsFiltering(false);
-      setFilteredCampers([...campers]);
+      setActiveFilters(null);
+      dispatch(fetchCampers(1));
       return;
     }
 
-    setIsFiltering(true);
-
     const apiParams = mapFiltersToApiParams(filters);
-    const action = await dispatch(fetchFilteredCampers(apiParams));
 
-    if (fetchFilteredCampers.fulfilled.match(action)) {
-      const items = Array.isArray(action.payload)
-        ? action.payload
-        : (action.payload?.items ?? []);
-      setFilteredCampers(items);
-    } else {
-      setFilteredCampers([]);
-    }
+    setActiveFilters(apiParams);
+
+    dispatch(
+      fetchFilteredCampers({
+        filters: apiParams,
+        page: 1,
+      })
+    );
   };
 
-  const handleLoadMore = (e) => {
-    e.preventDefault();
-    setDisplayCount((prev) => prev + 4);
-
-    if (!isFiltering) {
-      dispatch(loadMore());
+  const handleLoadMore = () => {
+    if (status === "loading" || !hasMore) {
+      return;
     }
+
+    const nextPage = page + 1;
+
+    dispatch(loadMore());
+
+    if (activeFilters) {
+      dispatch(
+        fetchFilteredCampers({
+          filters: activeFilters,
+          page: nextPage,
+        })
+      );
+
+      return;
+    }
+
+    dispatch(fetchCampers(nextPage));
   };
 
   const renderContent = () => {
-    if (
-      status === "loading" &&
-      campers.length === 0 &&
-      filteredCampers.length === 0
-    ) {
+    if (status === "loading" && uniqueCampers.length === 0) {
       return <Loader />;
     }
 
-    if (status === "failed") {
+    if (status === "failed" && uniqueCampers.length === 0) {
       return (
         <div className={styles.errorMessage}>
           Error: {error || "An unknown error occurred."}
@@ -118,7 +143,7 @@ const Catalog = () => {
       );
     }
 
-    if (filteredCampers.length === 0) {
+    if (status === "succeeded" && uniqueCampers.length === 0) {
       return (
         <div className={styles.noResults}>
           No campers found matching your criteria.
@@ -128,17 +153,28 @@ const Catalog = () => {
 
     return (
       <>
-        <ul className={styles.camperList} role="list">
-          {visibleCampers.map((camper) => (
+        <ul className={styles.camperList}>
+          {uniqueCampers.map((camper) => (
             <li key={camper.id} className={styles.camperListItem}>
               <CamperCard camper={camper} />
             </li>
           ))}
         </ul>
 
-        {filteredCampers.length > displayCount && (
-          <button onClick={handleLoadMore} className={styles.loadMoreButton}>
-            Load more
+        {status === "failed" && (
+          <div className={styles.errorMessage}>
+            Error: {error || "Could not load more campers."}
+          </div>
+        )}
+
+        {hasMore && uniqueCampers.length > 0 && (
+          <button
+            type="button"
+            onClick={handleLoadMore}
+            className={styles.loadMoreButton}
+            disabled={status === "loading"}
+          >
+            {status === "loading" ? "Loading..." : "Load more"}
           </button>
         )}
       </>
@@ -146,10 +182,13 @@ const Catalog = () => {
   };
 
   return (
-    <div className={styles.catalogContainer}>
+    <main className={styles.catalogContainer}>
       <Sidebar onSearch={handleSearch} />
-      <div className={styles.camperListWrapper}>{renderContent()}</div>
-    </div>
+
+      <section className={styles.camperListWrapper}>
+        {renderContent()}
+      </section>
+    </main>
   );
 };
 
