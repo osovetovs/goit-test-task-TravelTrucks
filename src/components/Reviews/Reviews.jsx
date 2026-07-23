@@ -1,32 +1,46 @@
-import { useOutletContext } from "react-router-dom";
-import styles from "./Reviews.module.css";
 import { BsStarFill } from "react-icons/bs";
 
-const Reviews = () => {
-  const { camper } = useOutletContext();
+import styles from "./Reviews.module.css";
 
-  if (!camper.reviews || camper.reviews.length === 0) {
-    return <p>No reviews available.</p>;
+const Reviews = ({ camper }) => {
+  const reviews = Array.isArray(camper?.reviews)
+    ? camper.reviews
+    : [];
+
+  if (reviews.length === 0) {
+    return (
+      <div className={styles.emptyReviews}>
+        No reviews available.
+      </div>
+    );
   }
 
   return (
     <ul className={styles.reviewsList} role="list">
-      {camper.reviews.map((review, index) => (
-        <li key={index} className={styles.review}>
+      {reviews.map((review, reviewIndex) => (
+        <li
+          key={`${review.reviewer_name}-${reviewIndex}`}
+          className={styles.review}
+        >
           <div className={styles.header}>
-            <div className={styles.avatarContainer}>
-              <span className={styles.avatar}>{review.reviewer_name?.[0]}</span>
+            <div className={styles.avatarContainer} aria-hidden="true">
+              {review.reviewer_name?.[0]?.toUpperCase() || "?"}
             </div>
 
             <div className={styles.info}>
-              <h3 className={styles.reviewerName}>{review.reviewer_name}</h3>
+              <h3 className={styles.reviewerName}>
+                {review.reviewer_name}
+              </h3>
 
-              <div className={styles.rating}>
-                {[...Array(5)].map((_, i) => (
+              <div
+                className={styles.rating}
+                aria-label={`${review.reviewer_rating} out of 5 stars`}
+              >
+                {Array.from({ length: 5 }, (_, starIndex) => (
                   <BsStarFill
-                    key={i}
+                    key={starIndex}
                     className={
-                      i < review.reviewer_rating
+                      starIndex < review.reviewer_rating
                         ? styles.filledStar
                         : styles.emptyStar
                     }

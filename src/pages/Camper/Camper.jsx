@@ -1,16 +1,12 @@
 import { useEffect, useState } from "react";
-import {
-  Link,
-  Outlet,
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { BsMap, BsStarFill } from "react-icons/bs";
 
 import BookingForm from "../../components/BookingForm/BookingForm";
+import Features from "../../components/Features/Features";
 import Loader from "../../components/Loader/Loader";
+import Reviews from "../../components/Reviews/Reviews";
 
 import styles from "./Camper.module.css";
 
@@ -28,8 +24,6 @@ const formatPrice = (price) => {
 
 const Camper = () => {
   const { id } = useParams();
-  const location = useLocation();
-  const navigate = useNavigate();
 
   const [camper, setCamper] = useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -46,16 +40,16 @@ const Camper = () => {
 
       setLoading(true);
       setError("");
+      setCamper(null);
       setSelectedImageIndex(0);
 
       try {
         const response = await axios.get(`${API}/${id}`);
+
         setCamper(response.data);
       } catch (requestError) {
-        setCamper(null);
-
         if (requestError.response?.status === 404) {
-          setError("Camper not found.");
+          setError("The requested camper could not be found.");
         } else {
           setError("Unable to load camper details.");
         }
@@ -67,12 +61,6 @@ const Camper = () => {
     fetchCamper();
   }, [id]);
 
-  useEffect(() => {
-    if (camper && location.pathname === `/catalog/${id}`) {
-      navigate("features", { replace: true });
-    }
-  }, [camper, id, location.pathname, navigate]);
-
   if (loading) {
     return <Loader />;
   }
@@ -81,6 +69,7 @@ const Camper = () => {
     return (
       <main className={styles.errorState}>
         <h1 className={styles.errorTitle}>Camper unavailable</h1>
+
         <p className={styles.errorDescription}>{error}</p>
 
         <Link className={styles.backButton} to="/catalog">
@@ -97,6 +86,10 @@ const Camper = () => {
     gallery[selectedImageIndex]?.thumb ||
     "";
 
+  const reviewsCount = Array.isArray(camper.reviews)
+    ? camper.reviews.length
+    : 0;
+
   return (
     <main className={styles.camperContainer}>
       <section className={styles.overview}>
@@ -108,13 +101,17 @@ const Camper = () => {
               alt={`${camper.name} main view`}
             />
           ) : (
-            <div className={styles.imagePlaceholder}>No image available</div>
+            <div className={styles.imagePlaceholder}>
+              No image available
+            </div>
           )}
 
           {gallery.length > 0 && (
             <div className={styles.thumbnailList}>
               {gallery.map((image, index) => {
-                const thumbnailSource = image.thumb || image.original;
+                const thumbnailSource =
+                  image.thumb || image.original || "";
+
                 const isActive = index === selectedImageIndex;
 
                 return (
@@ -141,61 +138,56 @@ const Camper = () => {
           )}
         </div>
 
-        <article className={styles.summaryCard}>
-          <h1 className={styles.camperName}>{camper.name}</h1>
+        <div className={styles.detailsColumn}>
+          <article className={styles.summaryCard}>
+            <h1 className={styles.camperName}>{camper.name}</h1>
 
-          <div className={styles.meta}>
-            <div className={styles.rating}>
-              <BsStarFill className={styles.starIcon} aria-hidden="true" />
+            <div className={styles.meta}>
+              <div className={styles.rating}>
+                <BsStarFill
+                  className={styles.starIcon}
+                  aria-hidden="true"
+                />
 
-              <span>{Number(camper.rating || 0).toFixed(1)}</span>
+                <span>{Number(camper.rating || 0).toFixed(1)}</span>
 
-              <span>
-                ({camper.reviews?.length || 0}{" "}
-                {camper.reviews?.length === 1 ? "Review" : "Reviews"})
-              </span>
+                <span>
+                  ({reviewsCount}{" "}
+                  {reviewsCount === 1 ? "Review" : "Reviews"})
+                </span>
+              </div>
+
+              <p className={styles.location}>
+                <BsMap aria-hidden="true" />
+                {camper.location}
+              </p>
             </div>
 
-            <p className={styles.location}>
-              <BsMap aria-hidden="true" />
-              {camper.location}
+            <p className={styles.price}>
+              {formatPrice(camper.price)}
             </p>
-          </div>
 
-          <p className={styles.price}>{formatPrice(camper.price)}</p>
+            <p className={styles.description}>
+              {camper.description}
+            </p>
+          </article>
 
-          <p className={styles.description}>{camper.description}</p>
-        </article>
+          <Features camper={camper} />
+        </div>
       </section>
 
-      <nav className={styles.tabs} aria-label="Camper information">
-        <Link
-          to="features"
-          className={`${styles.tabButton} ${
-            location.pathname.includes("/features") ? styles.activeTab : ""
-          }`}
-        >
-          Features
-        </Link>
+      <section className={styles.reviewsSection}>
+        <h2 className={styles.sectionTitle}>Reviews</h2>
 
-        <Link
-          to="reviews"
-          className={`${styles.tabButton} ${
-            location.pathname.includes("/reviews") ? styles.activeTab : ""
-          }`}
-        >
-          Reviews
-        </Link>
-      </nav>
+        <div className={styles.reviewsAndBooking}>
+          <div className={styles.reviewsColumn}>
+            <Reviews camper={camper} />
+          </div>
 
-      <div className={styles.divider} />
-
-      <section className={styles.featuresAndBooking}>
-        <div className={styles.outletContent}>
-          <Outlet context={{ camper }} />
+          <div className={styles.bookingColumn}>
+            <BookingForm camperId={id} />
+          </div>
         </div>
-
-        <BookingForm camperId={id} />
       </section>
     </main>
   );

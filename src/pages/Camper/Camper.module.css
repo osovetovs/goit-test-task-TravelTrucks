@@ -2,7 +2,7 @@
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 48px 64px 64px;
+  padding: 48px 64px 96px;
 }
 
 .overview {
@@ -12,8 +12,15 @@
   gap: 24px;
 }
 
-.galleryColumn {
+.galleryColumn,
+.detailsColumn {
   min-width: 0;
+}
+
+.detailsColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .mainImage,
@@ -49,6 +56,7 @@
   gap: 24px;
 
   overflow-x: auto;
+  scrollbar-width: thin;
 }
 
 .thumbnailButton {
@@ -156,53 +164,29 @@
   line-height: 24px;
 }
 
-.tabs {
+.reviewsSection {
   margin-top: 64px;
-
-  display: flex;
-  align-items: center;
-  gap: 40px;
 }
 
-.tabButton {
-  padding-bottom: 24px;
+.sectionTitle {
+  margin: 0 0 24px;
 
-  border-bottom: 4px solid transparent;
   color: var(--dark-blue);
 
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 600;
-  line-height: 24px;
-
-  transition:
-    border-color 200ms ease,
-    color 200ms ease;
+  line-height: 32px;
 }
 
-.tabButton:hover,
-.tabButton:focus-visible,
-.activeTab {
-  border-bottom-color: var(--green);
-  color: var(--green);
-}
-
-.divider {
-  width: 100%;
-  height: 1px;
-
-  background-color: var(--light-gray);
-}
-
-.featuresAndBooking {
-  margin-top: 48px;
-
+.reviewsAndBooking {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: stretch;
-  gap: 40px;
+  align-items: start;
+  gap: 48px;
 }
 
-.outletContent {
+.reviewsColumn,
+.bookingColumn {
   min-width: 0;
 }
 
@@ -254,6 +238,8 @@
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
+
+  transition: background-color 200ms ease;
 }
 
 .backButton:hover,
@@ -272,17 +258,18 @@
     height: 420px;
   }
 
-  .featuresAndBooking {
-    grid-template-columns: 1fr;
+  .reviewsAndBooking {
+    gap: 24px;
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 800px) {
   .camperContainer {
-    padding: 32px 20px;
+    padding: 32px 20px 64px;
   }
 
-  .overview {
+  .overview,
+  .reviewsAndBooking {
     grid-template-columns: 1fr;
   }
 
