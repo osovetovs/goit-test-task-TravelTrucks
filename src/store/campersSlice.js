@@ -32,6 +32,34 @@ const getUniqueItems = (items) => {
   return Array.from(uniqueItems.values());
 };
 
+const applyCampersPage = (state, action) => {
+  const { data, page } = action.payload;
+
+  const incomingItems = getUniqueItems(getItems(data));
+  const currentItems = getUniqueItems(state.campers);
+
+  if (page === 1) {
+    state.campers = incomingItems;
+    state.hasMore = incomingItems.length === PAGE_LIMIT;
+  } else {
+    const currentIds = new Set(
+      currentItems.map((camper) => String(camper.id))
+    );
+
+    const newItems = incomingItems.filter(
+      (camper) => !currentIds.has(String(camper.id))
+    );
+
+    state.campers = [...currentItems, ...newItems];
+    state.hasMore =
+      incomingItems.length === PAGE_LIMIT && newItems.length > 0;
+  }
+
+  state.page = page;
+  state.status = "succeeded";
+  state.error = null;
+};
+
 export const fetchCampers = createAsyncThunk(
   "campers/fetchCampers",
   async (page, thunkAPI) => {
@@ -48,7 +76,11 @@ export const fetchCampers = createAsyncThunk(
         page,
       };
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message ||
+          error.message ||
+          "Unable to load campers."
+      );
     }
   }
 );
@@ -70,7 +102,22 @@ export const fetchFilteredCampers = createAsyncThunk(
         page,
       };
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      /*
+       * MockAPI returns 404 when no records match the query.
+       * For a filtered catalog, that is a valid empty result.
+       */
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
+        return {
+          data: [],
+          page,
+        };
+      }
+
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message ||
+          error.message ||
+          "Unable to filter campers."
+      );
     }
   }
 );
@@ -82,7 +129,11 @@ export const fetchCamperDetailsById = createAsyncThunk(
       const response = await axios.get(`${API}/${camperId}`);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message ||
+          error.message ||
+          "Unable to load camper details."
+      );
     }
   }
 );
@@ -122,33 +173,7 @@ const campersSlice = createSlice({
         state.status = "loading";
         state.error = null;
       })
-      .addCase(fetchCampers.fulfilled, (state, action) => {
-        const { data, page } = action.payload;
-
-        const incomingItems = getUniqueItems(getItems(data));
-        const currentItems = getUniqueItems(state.campers);
-
-        if (page === 1) {
-          state.campers = incomingItems;
-          state.hasMore = incomingItems.length === PAGE_LIMIT;
-        } else {
-          const currentIds = new Set(
-            currentItems.map((camper) => String(camper.id))
-          );
-
-          const newItems = incomingItems.filter(
-            (camper) => !currentIds.has(String(camper.id))
-          );
-
-          state.campers = [...currentItems, ...newItems];
-
-          state.hasMore =
-            incomingItems.length === PAGE_LIMIT && newItems.length > 0;
-        }
-
-        state.page = page;
-        state.status = "succeeded";
-      })
+      .addCase(fetchCampers.fulfilled, applyCampersPage)
       .addCase(fetchCampers.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
@@ -158,33 +183,7 @@ const campersSlice = createSlice({
         state.status = "loading";
         state.error = null;
       })
-      .addCase(fetchFilteredCampers.fulfilled, (state, action) => {
-        const { data, page } = action.payload;
-
-        const incomingItems = getUniqueItems(getItems(data));
-        const currentItems = getUniqueItems(state.campers);
-
-        if (page === 1) {
-          state.campers = incomingItems;
-          state.hasMore = incomingItems.length === PAGE_LIMIT;
-        } else {
-          const currentIds = new Set(
-            currentItems.map((camper) => String(camper.id))
-          );
-
-          const newItems = incomingItems.filter(
-            (camper) => !currentIds.has(String(camper.id))
-          );
-
-          state.campers = [...currentItems, ...newItems];
-
-          state.hasMore =
-            incomingItems.length === PAGE_LIMIT && newItems.length > 0;
-        }
-
-        state.page = page;
-        state.status = "succeeded";
-      })
+      .addCase(fetchFilteredCampers.fulfilled, applyCampersPage)
       .addCase(fetchFilteredCampers.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
@@ -197,6 +196,7 @@ const campersSlice = createSlice({
       .addCase(fetchCamperDetailsById.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.selectedCamper = action.payload;
+        state.error = null;
       })
       .addCase(fetchCamperDetailsById.rejected, (state, action) => {
         state.status = "failed";

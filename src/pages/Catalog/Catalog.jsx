@@ -5,12 +5,16 @@ import CamperCard from "../../components/CamperCard/CamperCard";
 import Loader from "../../components/Loader/Loader";
 import Sidebar from "../../components/Sidebar/Sidebar";
 
+import noCampersImage from "../../assets/no-campers.png";
+
 import {
   fetchCampers,
   fetchFilteredCampers,
   loadMore,
   resetCampers,
 } from "../../store/campersSlice";
+
+import { resetFilters } from "../../store/filterSlice";
 
 import styles from "./Catalog.module.css";
 
@@ -74,6 +78,15 @@ const Catalog = () => {
     return Array.from(campersById.values());
   }, [campers]);
 
+  const showAllCampers = () => {
+    dispatch(resetFilters());
+    dispatch(resetCampers());
+
+    setActiveFilters(null);
+
+    dispatch(fetchCampers(1));
+  };
+
   const handleSearch = (filters) => {
     const filtering = hasAnyFilter(filters);
 
@@ -128,7 +141,19 @@ const Catalog = () => {
     if (status === "failed" && uniqueCampers.length === 0) {
       return (
         <div className={styles.errorMessage}>
-          Error: {error || "An unknown error occurred."}
+          <h2 className={styles.errorTitle}>Something went wrong</h2>
+
+          <p className={styles.errorDescription}>
+            {error || "We could not load the camper catalog."}
+          </p>
+
+          <button
+            type="button"
+            className={styles.primaryButton}
+            onClick={showAllCampers}
+          >
+            Try again
+          </button>
         </div>
       );
     }
@@ -136,7 +161,39 @@ const Catalog = () => {
     if (status === "succeeded" && uniqueCampers.length === 0) {
       return (
         <div className={styles.noResults}>
-          No campers found matching your criteria.
+          <img
+            className={styles.noResultsImage}
+            src={noCampersImage}
+            alt=""
+            aria-hidden="true"
+          />
+
+          <h2 className={styles.noResultsTitle}>No campers found</h2>
+
+          <p className={styles.noResultsDescription}>
+            We couldn&apos;t find any campers that match your filters.
+            <br />
+            Try adjusting your search or clearing some filters.
+          </p>
+
+          <div className={styles.noResultsActions}>
+            <button
+              type="button"
+              className={styles.secondaryButton}
+              onClick={showAllCampers}
+            >
+              <span aria-hidden="true">×</span>
+              Clear filters
+            </button>
+
+            <button
+              type="button"
+              className={styles.primaryButton}
+              onClick={showAllCampers}
+            >
+              View all campers
+            </button>
+          </div>
         </div>
       );
     }
@@ -152,8 +209,8 @@ const Catalog = () => {
         </ul>
 
         {status === "failed" && (
-          <div className={styles.errorMessage}>
-            Error: {error || "Could not load more campers."}
+          <div className={styles.inlineError}>
+            {error || "Could not load more campers."}
           </div>
         )}
 
@@ -175,7 +232,10 @@ const Catalog = () => {
     <main className={styles.catalogContainer}>
       <Sidebar onSearch={handleSearch} />
 
-      <section className={styles.camperListWrapper}>
+      <section
+        className={styles.camperListWrapper}
+        aria-label="Camper search results"
+      >
         {renderContent()}
       </section>
     </main>
