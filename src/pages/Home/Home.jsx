@@ -5,6 +5,16 @@ import styles from "./Home.module.css";
 const Home = () => {
   return (
     <main className={styles.container}>
+      <div className={styles.heroMedia} aria-hidden="true">
+        <img
+          className={styles.heroImage}
+          src="/assets/hero.jpg"
+          alt=""
+        />
+
+        <div className={styles.heroOverlay} />
+      </div>
+
       <section className={styles.hero}>
         <div className={styles.heroText}>
           <h1 className={styles.heroTitle}>Campers of your dreams</h1>
