@@ -13,8 +13,6 @@
 }
 
 .review {
-  box-sizing: border-box;
-
   width: 623px;
   height: 180px;
   padding: 16px;
@@ -25,7 +23,7 @@
   gap: 16px;
 
   border-radius: 16px;
-  background-color: #f7f7f7;
+  background-color: var(--very-light-gray);
 }
 
 .header {
@@ -48,8 +46,8 @@
   justify-content: center;
 
   border-radius: 60px;
-  background-color: #ffffff;
-  color: #829b91;
+  background-color: var(--white);
+  color: var(--green);
 
   font-size: 24px;
   font-weight: 600;
@@ -70,7 +68,7 @@
   height: 24px;
   margin: 0;
 
-  color: #101828;
+  color: var(--dark-blue);
 
   font-size: 16px;
   font-weight: 500;
@@ -87,20 +85,32 @@
   gap: 4px;
 }
 
-.filledStar,
-.emptyStar {
+.star {
   width: 16px;
   height: 16px;
 
+  display: block;
   flex: 0 0 16px;
+
+  -webkit-mask-image: var(--review-star-icon);
+  mask-image: var(--review-star-icon);
+
+  -webkit-mask-position: center;
+  mask-position: center;
+
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+
+  -webkit-mask-size: contain;
+  mask-size: contain;
 }
 
 .filledStar {
-  color: #ffc531;
+  background-color: var(--yellow);
 }
 
 .emptyStar {
-  color: #dadde1;
+  background-color: var(--light-gray);
 }
 
 .comment {
@@ -110,7 +120,7 @@
 
   overflow: hidden;
 
-  color: #475467;
+  color: var(--gray-blue);
 
   font-size: 16px;
   font-weight: 400;
@@ -118,16 +128,14 @@
 }
 
 .emptyReviews {
-  box-sizing: border-box;
-
   width: 623px;
   min-height: 80px;
   margin: 0;
   padding: 16px;
 
   border-radius: 16px;
-  background-color: #f7f7f7;
-  color: #475467;
+  background-color: var(--very-light-gray);
+  color: var(--gray-blue);
 
   font-size: 16px;
   font-weight: 400;
@@ -135,6 +143,7 @@
 }
 
 @media (max-width: 900px) {
+
   .reviewsList,
   .review,
   .emptyReviews {

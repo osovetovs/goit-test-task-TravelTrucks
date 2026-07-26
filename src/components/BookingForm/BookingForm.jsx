@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { BsExclamationCircleFill } from "react-icons/bs";
+
+import errorIcon from "../../assets/icons/error-icon.svg";
 
 import styles from "./BookingForm.module.css";
 
@@ -37,7 +38,7 @@ const validateEmail = (email) => {
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!emailPattern.test(trimmedEmail)) {
-    return "Please enter a valid email.";
+    return "Please enter your email.";
   }
 
   return "";
@@ -113,7 +114,9 @@ const BookingForm = () => {
       noValidate
     >
       <div className={styles.titleContainer}>
-        <h2 className={styles.title}>Book your campervan now</h2>
+        <h2 className={styles.title}>
+          Book your campervan now
+        </h2>
 
         <p className={styles.subtitle}>
           Stay connected! We are always ready to help you.
@@ -122,14 +125,18 @@ const BookingForm = () => {
 
       <div className={styles.formContent}>
         <div className={styles.fields}>
-          <div className={styles.field}>
-            <div
-              className={`${styles.inputContainer} ${
-                errors.name ? styles.inputError : ""
+          <div
+            className={`${styles.field} ${errors.name ? styles.fieldError : ""
               }`}
+          >
+            <div
+              className={`${styles.inputContainer} ${errors.name ? styles.inputError : ""
+                }`}
             >
               {errors.name && (
-                <span className={styles.floatingLabel}>Name*</span>
+                <span className={styles.floatingLabel}>
+                  Name*
+                </span>
               )}
 
               <input
@@ -143,15 +150,19 @@ const BookingForm = () => {
                 onBlur={handleBlur}
                 aria-invalid={Boolean(errors.name)}
                 aria-describedby={
-                  errors.name ? "booking-name-error" : undefined
+                  errors.name
+                    ? "booking-name-error"
+                    : undefined
                 }
                 autoComplete="name"
                 required
               />
 
               {errors.name && (
-                <BsExclamationCircleFill
+                <img
                   className={styles.errorIcon}
+                  src={errorIcon}
+                  alt=""
                   aria-hidden="true"
                 />
               )}
@@ -167,14 +178,18 @@ const BookingForm = () => {
             )}
           </div>
 
-          <div className={styles.field}>
-            <div
-              className={`${styles.inputContainer} ${
-                errors.email ? styles.inputError : ""
+          <div
+            className={`${styles.field} ${errors.email ? styles.fieldError : ""
               }`}
+          >
+            <div
+              className={`${styles.inputContainer} ${errors.email ? styles.inputError : ""
+                }`}
             >
               {errors.email && (
-                <span className={styles.floatingLabel}>Email*</span>
+                <span className={styles.floatingLabel}>
+                  Email*
+                </span>
               )}
 
               <input
@@ -188,15 +203,19 @@ const BookingForm = () => {
                 onBlur={handleBlur}
                 aria-invalid={Boolean(errors.email)}
                 aria-describedby={
-                  errors.email ? "booking-email-error" : undefined
+                  errors.email
+                    ? "booking-email-error"
+                    : undefined
                 }
                 autoComplete="email"
                 required
               />
 
               {errors.email && (
-                <BsExclamationCircleFill
+                <img
                   className={styles.errorIcon}
+                  src={errorIcon}
+                  alt=""
                   aria-hidden="true"
                 />
               )}

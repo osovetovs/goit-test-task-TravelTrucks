@@ -1,6 +1,10 @@
-import { BsStarFill } from "react-icons/bs";
+import starIcon from "../../assets/icons/camper-card/star.svg";
 
 import styles from "./Reviews.module.css";
+
+const reviewStarStyle = {
+  "--review-star-icon": `url("${starIcon}")`,
+};
 
 const Reviews = ({ camper }) => {
   const reviews = Array.isArray(camper?.reviews)
@@ -20,7 +24,10 @@ const Reviews = ({ camper }) => {
       {reviews.map((review, reviewIndex) => {
         const reviewerRating = Math.min(
           5,
-          Math.max(0, Math.round(Number(review.reviewer_rating) || 0)),
+          Math.max(
+            0,
+            Math.round(Number(review.reviewer_rating) || 0),
+          ),
         );
 
         return (
@@ -43,16 +50,16 @@ const Reviews = ({ camper }) => {
 
                 <div
                   className={styles.rating}
+                  style={reviewStarStyle}
                   aria-label={`${reviewerRating} out of 5 stars`}
                 >
                   {Array.from({ length: 5 }, (_, starIndex) => (
-                    <BsStarFill
+                    <span
                       key={starIndex}
-                      className={
-                        starIndex < reviewerRating
+                      className={`${styles.star} ${starIndex < reviewerRating
                           ? styles.filledStar
                           : styles.emptyStar
-                      }
+                        }`}
                       aria-hidden="true"
                     />
                   ))}
