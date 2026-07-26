@@ -8,6 +8,7 @@
   display: flex;
   align-items: center;
 
+  border-bottom: 1px solid var(--extra-light-gray);
   background-color: var(--very-light-gray);
 }
 
@@ -23,11 +24,12 @@
 .navlink {
   position: absolute;
   left: 50%;
-  transform: translateX(-50%);
 
   display: flex;
   align-items: center;
   gap: 32px;
+
+  transform: translateX(-50%);
 }
 
 .link {
