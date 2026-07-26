@@ -1,20 +1,17 @@
 .loaderOverlay {
-  position: fixed;
-  top: 72px;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  position: absolute;
+  inset: 0;
   z-index: 1000;
 
   background-color: rgba(223, 223, 223, 0.44);
+
+  pointer-events: auto;
 }
 
 .loaderCard {
-  position: absolute;
-  top: min(445px, calc(50% - 148px));
+  position: fixed;
+  top: calc(50% + 36px);
   left: 50%;
-
-  box-sizing: border-box;
 
   width: 543px;
   height: 296px;
@@ -26,22 +23,22 @@
   justify-content: center;
   gap: 32px;
 
-  border-radius: 16px;
-  background-color: #ffffff;
+  overflow: hidden;
 
-  transform: translateX(-50%);
+  border-radius: 16px;
+  background-color: var(--white);
+
+  transform: translate(-50%, -50%);
 }
 
 .spinner {
-  box-sizing: border-box;
-
   width: 72px;
   height: 72px;
 
   flex: 0 0 72px;
 
-  border: 6px solid #f7f7f7;
-  border-top-color: #6d7b75;
+  border: 6px solid var(--very-light-gray);
+  border-right-color: var(--dark-green);
   border-radius: 50%;
 
   animation: loaderSpin 900ms linear infinite;
@@ -62,7 +59,7 @@
   height: 32px;
   margin: 0;
 
-  color: #101828;
+  color: var(--dark-blue);
 
   font-size: 24px;
   font-weight: 600;
@@ -75,7 +72,7 @@
   height: 48px;
   margin: 0;
 
-  color: #101828;
+  color: var(--dark-blue);
 
   font-size: 16px;
   font-weight: 500;
@@ -91,14 +88,12 @@
 
 @media (max-width: 600px) {
   .loaderCard {
-    top: 50%;
+    top: calc(50% + 36px);
 
     width: calc(100% - 32px);
     height: auto;
     min-height: 296px;
     padding: 48px 24px;
-
-    transform: translate(-50%, -50%);
   }
 
   .textContainer,

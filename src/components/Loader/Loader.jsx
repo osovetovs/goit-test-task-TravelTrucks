@@ -2,7 +2,11 @@ import styles from "./Loader.module.css";
 
 const Loader = () => {
   return (
-    <div className={styles.loaderOverlay} aria-busy="true">
+    <div
+      className={styles.loaderOverlay}
+      aria-busy="true"
+      aria-label="Content is loading"
+    >
       <div
         className={styles.loaderCard}
         role="status"
