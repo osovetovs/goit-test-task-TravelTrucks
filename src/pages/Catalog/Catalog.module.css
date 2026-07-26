@@ -1,4 +1,6 @@
 .catalogContainer {
+  position: relative;
+
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
@@ -9,7 +11,7 @@
   align-items: start;
   gap: 64px;
 
-  background-color: #ffffff;
+  background-color: var(--white);
 }
 
 .catalogContainer:has(.noResults) {
@@ -47,8 +49,6 @@
 }
 
 .loadMoreButton {
-  box-sizing: border-box;
-
   width: 145px;
   height: 56px;
   margin: 40px auto 0;
@@ -59,10 +59,13 @@
   justify-content: center;
   gap: 10px;
 
-  border: 1px solid #dadde1;
+  overflow: hidden;
+
+  border: 1px solid var(--light-gray);
   border-radius: 200px;
-  background-color: #ffffff;
-  color: #101828;
+  background-color: var(--white);
+  color: var(--dark-blue);
+
   cursor: pointer;
 
   font-family: inherit;
@@ -79,15 +82,13 @@
 
 .loadMoreButton:hover,
 .loadMoreButton:focus-visible {
-  border-color: #829b91;
+  border-color: var(--green);
 }
 
 .loadMoreButton:disabled {
   cursor: not-allowed;
   opacity: 0.6;
 }
-
-/* Figma empty-results card */
 
 .noResults {
   position: relative;
@@ -99,7 +100,7 @@
   overflow: hidden;
 
   border-radius: 16px;
-  background-color: #f7f7f7;
+  background-color: var(--very-light-gray);
 }
 
 .noResultsImage {
@@ -109,8 +110,11 @@
 
   width: 488px;
   height: 463px;
+  max-width: none;
 
   object-fit: contain;
+
+  pointer-events: none;
 }
 
 .noResultsTitle {
@@ -122,7 +126,7 @@
   height: 32px;
   margin: 0;
 
-  color: #101828;
+  color: var(--dark-blue);
 
   font-size: 24px;
   font-weight: 600;
@@ -139,7 +143,7 @@
   height: 48px;
   margin: 0;
 
-  color: #101828;
+  color: var(--dark-blue);
 
   font-size: 16px;
   font-weight: 500;
@@ -170,7 +174,10 @@
   align-items: center;
   justify-content: center;
 
+  overflow: hidden;
+
   border-radius: 200px;
+
   cursor: pointer;
 
   font-family: inherit;
@@ -189,13 +196,13 @@
   padding: 16px 24px;
 
   border: none;
-  background-color: #829b91;
-  color: #ffffff;
+  background-color: var(--green);
+  color: var(--white);
 }
 
 .primaryButton:hover,
 .primaryButton:focus-visible {
-  background-color: #6d7b75;
+  background-color: var(--dark-green);
 }
 
 .secondaryButton {
@@ -203,30 +210,24 @@
 
   gap: 4px;
 
-  border: 1px solid #dadde1;
-  background-color: #ffffff;
-  color: #101828;
+  border: 1px solid var(--light-gray);
+  background-color: var(--white);
+  color: var(--dark-blue);
 }
 
 .secondaryButton:hover,
 .secondaryButton:focus-visible {
-  border-color: #829b91;
+  border-color: var(--green);
 }
 
-.secondaryButton span {
+.closeIcon {
   width: 24px;
   height: 24px;
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  flex: 0 0 24px;
 
-  font-size: 24px;
-  font-weight: 400;
-  line-height: 24px;
+  object-fit: contain;
 }
-
-/* Actual request failure */
 
 .errorMessage {
   width: 888px;
@@ -239,14 +240,15 @@
   justify-content: center;
 
   border-radius: 16px;
-  background-color: #f7f7f7;
+  background-color: var(--very-light-gray);
+
   text-align: center;
 }
 
 .errorTitle {
   margin: 0;
 
-  color: #101828;
+  color: var(--dark-blue);
 
   font-size: 24px;
   font-weight: 600;
@@ -256,7 +258,7 @@
 .errorDescription {
   margin: 16px 0 0;
 
-  color: #475467;
+  color: var(--gray-blue);
 
   font-size: 16px;
   font-weight: 400;
@@ -271,7 +273,7 @@
   width: 100%;
   margin-top: 24px;
 
-  color: #e44848;
+  color: var(--red);
 
   font-size: 16px;
   line-height: 24px;
@@ -297,6 +299,7 @@
 }
 
 @media (max-width: 900px) {
+
   .catalogContainer,
   .catalogContainer:has(.noResults) {
     min-height: auto;
@@ -315,6 +318,7 @@
 
   .camperListItem {
     height: auto;
+
     flex-basis: auto;
   }
 

@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import { BsMap, BsStarFill } from "react-icons/bs";
 
 import BookingForm from "../../components/BookingForm/BookingForm";
 import Features from "../../components/Features/Features";
 import Loader from "../../components/Loader/Loader";
 import Reviews from "../../components/Reviews/Reviews";
+
+import mapIcon from "../../assets/icons/camper-card/map.svg";
+import starIcon from "../../assets/icons/camper-card/star.svg";
 
 import styles from "./Camper.module.css";
 
@@ -16,10 +18,29 @@ const formatPrice = (price) => {
   const numericPrice = Number(price);
 
   if (!Number.isFinite(numericPrice)) {
-    return "€0,00";
+    return "€0";
   }
 
-  return `€${numericPrice.toFixed(2).replace(".", ",")}`;
+  return `€${numericPrice}`;
+};
+
+const formatLocation = (location) => {
+  if (typeof location !== "string") {
+    return "";
+  }
+
+  const locationParts = location
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+  if (locationParts.length < 2) {
+    return location.trim();
+  }
+
+  const [country, ...cityParts] = locationParts;
+
+  return `${cityParts.join(", ")}, ${country}`;
 };
 
 const Camper = () => {
@@ -90,16 +111,24 @@ const Camper = () => {
     ? camper.reviews.length
     : 0;
 
+  const formattedRating = Number(camper.rating || 0).toFixed(1);
+  const isFirstImageSelected = selectedImageIndex === 0;
+
   return (
     <main className={styles.camperContainer}>
       <section className={styles.overview}>
         <div className={styles.galleryColumn}>
           {selectedImage ? (
-            <img
-              className={styles.mainImage}
-              src={selectedImage}
-              alt={`${camper.name} main view`}
-            />
+            <div className={styles.mainImageFrame}>
+              <img
+                className={`${styles.mainImage} ${isFirstImageSelected
+                    ? styles.firstMainImage
+                    : styles.defaultMainImage
+                  }`}
+                src={selectedImage}
+                alt={`${camper.name} main view`}
+              />
+            </div>
           ) : (
             <div className={styles.imagePlaceholder}>
               No image available
@@ -118,9 +147,8 @@ const Camper = () => {
                   <button
                     key={`${thumbnailSource}-${index}`}
                     type="button"
-                    className={`${styles.thumbnailButton} ${
-                      isActive ? styles.activeThumbnail : ""
-                    }`}
+                    className={`${styles.thumbnailButton} ${isActive ? styles.activeThumbnail : ""
+                      }`}
                     onClick={() => setSelectedImageIndex(index)}
                     aria-label={`Show ${camper.name} image ${index + 1}`}
                     aria-pressed={isActive}
@@ -144,32 +172,34 @@ const Camper = () => {
 
             <div className={styles.meta}>
               <div className={styles.rating}>
-                <BsStarFill
+                <img
                   className={styles.starIcon}
+                  src={starIcon}
+                  alt=""
                   aria-hidden="true"
                 />
 
-                <span>{Number(camper.rating || 0).toFixed(1)}</span>
-
                 <span>
-                  ({reviewsCount}{" "}
+                  {formattedRating}({reviewsCount}{" "}
                   {reviewsCount === 1 ? "Review" : "Reviews"})
                 </span>
               </div>
 
               <p className={styles.location}>
-                <BsMap aria-hidden="true" />
-                {camper.location}
+                <img
+                  className={styles.mapIcon}
+                  src={mapIcon}
+                  alt=""
+                  aria-hidden="true"
+                />
+
+                <span>{formatLocation(camper.location)}</span>
               </p>
             </div>
 
-            <p className={styles.price}>
-              {formatPrice(camper.price)}
-            </p>
+            <p className={styles.price}>{formatPrice(camper.price)}</p>
 
-            <p className={styles.description}>
-              {camper.description}
-            </p>
+            <p className={styles.description}>{camper.description}</p>
           </article>
 
           <Features camper={camper} />
@@ -185,7 +215,7 @@ const Camper = () => {
           </div>
 
           <div className={styles.bookingColumn}>
-            <BookingForm camperId={id} />
+            <BookingForm />
           </div>
         </div>
       </section>

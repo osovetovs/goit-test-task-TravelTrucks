@@ -5,13 +5,13 @@ import CamperCard from "../../components/CamperCard/CamperCard";
 import Loader from "../../components/Loader/Loader";
 import Sidebar from "../../components/Sidebar/Sidebar";
 
+import closeIcon from "../../assets/icons/ion_close.svg";
 import noCampersImage from "../../assets/no-campers.png";
 
 import {
   fetchCampers,
   fetchFilteredCampers,
   loadMore,
-  resetCampers,
 } from "../../store/campersSlice";
 
 import { resetFilters } from "../../store/filterSlice";
@@ -49,9 +49,9 @@ const hasAnyFilter = (filters) => {
 
   return Boolean(
     filters.location.trim() ||
-      filters.form ||
-      filters.engine ||
-      filters.transmission
+    filters.form ||
+    filters.engine ||
+    filters.transmission
   );
 };
 
@@ -63,6 +63,8 @@ const Catalog = () => {
   );
 
   const [activeFilters, setActiveFilters] = useState(null);
+
+  const isLoading = status === "loading";
 
   useEffect(() => {
     dispatch(fetchCampers(1));
@@ -80,7 +82,6 @@ const Catalog = () => {
 
   const showAllCampers = () => {
     dispatch(resetFilters());
-    dispatch(resetCampers());
 
     setActiveFilters(null);
 
@@ -89,8 +90,6 @@ const Catalog = () => {
 
   const handleSearch = (filters) => {
     const filtering = hasAnyFilter(filters);
-
-    dispatch(resetCampers());
 
     if (!filtering) {
       setActiveFilters(null);
@@ -111,7 +110,7 @@ const Catalog = () => {
   };
 
   const handleLoadMore = () => {
-    if (status === "loading" || !hasMore) {
+    if (isLoading || !hasMore) {
       return;
     }
 
@@ -134,14 +133,15 @@ const Catalog = () => {
   };
 
   const renderContent = () => {
-    if (status === "loading" && uniqueCampers.length === 0) {
-      return <Loader />;
-    }
-
-    if (status === "failed" && uniqueCampers.length === 0) {
+    if (
+      status === "failed" &&
+      uniqueCampers.length === 0
+    ) {
       return (
         <div className={styles.errorMessage}>
-          <h2 className={styles.errorTitle}>Something went wrong</h2>
+          <h2 className={styles.errorTitle}>
+            Something went wrong
+          </h2>
 
           <p className={styles.errorDescription}>
             {error || "We could not load the camper catalog."}
@@ -158,7 +158,10 @@ const Catalog = () => {
       );
     }
 
-    if (status === "succeeded" && uniqueCampers.length === 0) {
+    if (
+      status === "succeeded" &&
+      uniqueCampers.length === 0
+    ) {
       return (
         <div className={styles.noResults}>
           <img
@@ -168,10 +171,12 @@ const Catalog = () => {
             aria-hidden="true"
           />
 
-          <h2 className={styles.noResultsTitle}>No campers found</h2>
+          <h2 className={styles.noResultsTitle}>
+            No campers found
+          </h2>
 
           <p className={styles.noResultsDescription}>
-            We couldn&apos;t find any campers that match your filters.
+            We couldn’t find any campers that match your filters.
             <br />
             Try adjusting your search or clearing some filters.
           </p>
@@ -182,7 +187,13 @@ const Catalog = () => {
               className={styles.secondaryButton}
               onClick={showAllCampers}
             >
-              <span aria-hidden="true">×</span>
+              <img
+                className={styles.closeIcon}
+                src={closeIcon}
+                alt=""
+                aria-hidden="true"
+              />
+
               Clear filters
             </button>
 
@@ -202,26 +213,31 @@ const Catalog = () => {
       <>
         <ul className={styles.camperList}>
           {uniqueCampers.map((camper) => (
-            <li key={camper.id} className={styles.camperListItem}>
+            <li
+              key={camper.id}
+              className={styles.camperListItem}
+            >
               <CamperCard camper={camper} />
             </li>
           ))}
         </ul>
 
-        {status === "failed" && (
-          <div className={styles.inlineError}>
-            {error || "Could not load more campers."}
-          </div>
-        )}
+        {status === "failed" &&
+          uniqueCampers.length > 0 && (
+            <div className={styles.inlineError}>
+              {error || "Could not load more campers."}
+            </div>
+          )}
 
         {hasMore && uniqueCampers.length > 0 && (
           <button
             type="button"
             onClick={handleLoadMore}
             className={styles.loadMoreButton}
-            disabled={status === "loading"}
+            disabled={isLoading}
+            aria-busy={isLoading}
           >
-            {status === "loading" ? "Loading..." : "Load more"}
+            Load more
           </button>
         )}
       </>
@@ -229,7 +245,10 @@ const Catalog = () => {
   };
 
   return (
-    <main className={styles.catalogContainer}>
+    <main
+      className={styles.catalogContainer}
+      aria-busy={isLoading}
+    >
       <Sidebar onSearch={handleSearch} />
 
       <section
@@ -238,6 +257,8 @@ const Catalog = () => {
       >
         {renderContent()}
       </section>
+
+      {isLoading && <Loader />}
     </main>
   );
 };

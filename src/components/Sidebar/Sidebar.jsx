@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { BsMap, BsX } from "react-icons/bs";
+import { BsMap } from "react-icons/bs";
+
+import closeIcon from "../../assets/icons/ion_close.svg";
 
 import {
   resetFilters,
@@ -92,7 +94,10 @@ const Sidebar = ({ onSearch }) => {
           <span className={styles.locationTitle}>Location</span>
 
           <span className={styles.inputContainer}>
-            <BsMap className={styles.locationIcon} aria-hidden="true" />
+            <BsMap
+              className={styles.locationIcon}
+              aria-hidden="true"
+            />
 
             <input
               type="text"
@@ -108,8 +113,17 @@ const Sidebar = ({ onSearch }) => {
           <h2 className={styles.filterTitle}>Filters</h2>
 
           <div className={styles.filterGroups}>
-            <fieldset className={styles.filterGroup}>
-              <legend className={styles.groupTitle}>Camper form</legend>
+            <div
+              className={styles.filterGroup}
+              role="radiogroup"
+              aria-labelledby="camper-form-title"
+            >
+              <p
+                id="camper-form-title"
+                className={styles.groupTitle}
+              >
+                Camper form
+              </p>
 
               <div className={styles.options}>
                 {camperForms.map(({ label, value }) => (
@@ -127,10 +141,19 @@ const Sidebar = ({ onSearch }) => {
                   </label>
                 ))}
               </div>
-            </fieldset>
+            </div>
 
-            <fieldset className={styles.filterGroup}>
-              <legend className={styles.groupTitle}>Engine</legend>
+            <div
+              className={styles.filterGroup}
+              role="radiogroup"
+              aria-labelledby="engine-title"
+            >
+              <p
+                id="engine-title"
+                className={styles.groupTitle}
+              >
+                Engine
+              </p>
 
               <div className={styles.options}>
                 {engines.map(({ label, value }) => (
@@ -148,10 +171,19 @@ const Sidebar = ({ onSearch }) => {
                   </label>
                 ))}
               </div>
-            </fieldset>
+            </div>
 
-            <fieldset className={styles.filterGroup}>
-              <legend className={styles.groupTitle}>Transmission</legend>
+            <div
+              className={styles.filterGroup}
+              role="radiogroup"
+              aria-labelledby="transmission-title"
+            >
+              <p
+                id="transmission-title"
+                className={styles.groupTitle}
+              >
+                Transmission
+              </p>
 
               <div className={styles.options}>
                 {transmissions.map(({ label, value }) => (
@@ -162,14 +194,16 @@ const Sidebar = ({ onSearch }) => {
                       name="transmission"
                       value={value}
                       checked={filters.transmission === value}
-                      onChange={() => dispatch(setTransmission(value))}
+                      onChange={() =>
+                        dispatch(setTransmission(value))
+                      }
                     />
 
                     <span>{label}</span>
                   </label>
                 ))}
               </div>
-            </fieldset>
+            </div>
           </div>
         </div>
       </div>
@@ -184,7 +218,13 @@ const Sidebar = ({ onSearch }) => {
           className={styles.clearButton}
           onClick={handleClear}
         >
-          <BsX aria-hidden="true" />
+          <img
+            className={styles.clearButtonIcon}
+            src={closeIcon}
+            alt=""
+            aria-hidden="true"
+          />
+
           Clear filters
         </button>
       </div>

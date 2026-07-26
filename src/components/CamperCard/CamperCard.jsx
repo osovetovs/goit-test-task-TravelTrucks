@@ -1,11 +1,10 @@
 import { NavLink } from "react-router-dom";
-import {
-  BsCarFront,
-  BsDiagram3,
-  BsFuelPump,
-  BsMap,
-  BsStarFill,
-} from "react-icons/bs";
+
+import camperFormIcon from "../../assets/icons/camper-card/camper-form.svg";
+import fuelIcon from "../../assets/icons/camper-card/fuel.svg";
+import mapIcon from "../../assets/icons/camper-card/map.svg";
+import starIcon from "../../assets/icons/camper-card/star.svg";
+import transmissionIcon from "../../assets/icons/camper-card/transmission.svg";
 
 import styles from "./CamperCard.module.css";
 
@@ -13,10 +12,10 @@ const formatPrice = (price) => {
   const numericPrice = Number(price);
 
   if (!Number.isFinite(numericPrice)) {
-    return "€0,00";
+    return "€0";
   }
 
-  return `€${numericPrice.toFixed(2).replace(".", ",")}`;
+  return `€${numericPrice}`;
 };
 
 const capitalize = (value) => {
@@ -38,6 +37,35 @@ const formatForm = (form) => {
   return formLabels[form] || form;
 };
 
+const formatRating = (rating) => {
+  const numericRating = Number(rating);
+
+  if (!Number.isFinite(numericRating)) {
+    return "0";
+  }
+
+  return numericRating.toFixed(1).replace(/\.0$/, "");
+};
+
+const formatLocation = (location) => {
+  if (!location) {
+    return "";
+  }
+
+  const locationParts = location
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+  if (locationParts.length !== 2) {
+    return location;
+  }
+
+  const [country, city] = locationParts;
+
+  return `${city}, ${country}`;
+};
+
 const CamperCard = ({ camper }) => {
   const imageSource =
     camper.gallery?.[0]?.thumb ||
@@ -51,15 +79,15 @@ const CamperCard = ({ camper }) => {
   const filterValues = [
     camper.engine && {
       name: capitalize(camper.engine),
-      icon: <BsFuelPump aria-hidden="true" />,
+      icon: fuelIcon,
     },
     camper.transmission && {
       name: capitalize(camper.transmission),
-      icon: <BsDiagram3 aria-hidden="true" />,
+      icon: transmissionIcon,
     },
     camper.form && {
       name: formatForm(camper.form),
-      icon: <BsCarFront aria-hidden="true" />,
+      icon: camperFormIcon,
     },
   ].filter(Boolean);
 
@@ -81,7 +109,9 @@ const CamperCard = ({ camper }) => {
         <div className={styles.details}>
           <div className={styles.textContainer}>
             <div className={styles.headerRow}>
-              <h2 className={styles.camperName}>{camper.name}</h2>
+              <h2 className={styles.camperName}>
+                {camper.name}
+              </h2>
 
               <p className={styles.price}>
                 {formatPrice(camper.price)}
@@ -90,21 +120,28 @@ const CamperCard = ({ camper }) => {
 
             <div className={styles.locationAndRating}>
               <div className={styles.rating}>
-                <BsStarFill
+                <img
                   className={styles.starIcon}
+                  src={starIcon}
+                  alt=""
                   aria-hidden="true"
                 />
 
                 <span>
-                  {Number(camper.rating || 0).toFixed(1)}
-                  ({reviewsCount}{" "}
-                  {reviewsCount === 1 ? "Review" : "Reviews"})
+                  {formatRating(camper.rating)}
+                  ({reviewsCount} Reviews)
                 </span>
               </div>
 
               <p className={styles.location}>
-                <BsMap aria-hidden="true" />
-                {camper.location}
+                <img
+                  className={styles.locationIcon}
+                  src={mapIcon}
+                  alt=""
+                  aria-hidden="true"
+                />
+
+                <span>{formatLocation(camper.location)}</span>
               </p>
             </div>
           </div>
@@ -116,7 +153,12 @@ const CamperCard = ({ camper }) => {
           <ul className={styles.features}>
             {filterValues.map(({ name, icon }) => (
               <li key={name} className={styles.feature}>
-                {icon}
+                <img
+                  className={styles.featureIcon}
+                  src={icon}
+                  alt=""
+                  aria-hidden="true"
+                />
 
                 <span className={styles.featureName}>
                   {name}
@@ -127,8 +169,6 @@ const CamperCard = ({ camper }) => {
 
           <NavLink
             to={`/catalog/${camper.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
             className={styles.button}
           >
             Show more
